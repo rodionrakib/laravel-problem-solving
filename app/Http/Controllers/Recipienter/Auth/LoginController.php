@@ -30,24 +30,28 @@ class LoginController extends Controller
      * Attempt to log the user into the application.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return bool
+     * @return \Illuminate\Http\JsonResponse
      */
     protected function attemptLogin(Request $request)
     {
-        $token = $this->guard()->attempt($this->credentials($request));
+
+        $token = auth()->guard('recipienter')->attempt($request->only('email','password'));
 
         if (! $token) {
             return false;
         }
 
-        $user = $this->guard()->user();
+        $user = auth()->guard('recipienter')->user();
+
+
         if ($user instanceof MustVerifyEmail && ! $user->hasVerifiedEmail()) {
             return false;
         }
 
         $this->guard()->setToken($token);
 
-        return true;
+        return $this->sendLoginResponse($request);
+
     }
 
     /**
@@ -61,8 +65,12 @@ class LoginController extends Controller
         $this->clearLoginAttempts($request);
 
         $token = (string) $this->guard()->getToken();
+
         $data = $this->guard()->user();
+
+
         $expiration = $this->guard()->getPayload()->get('exp');
+
 
         return response()->json([
             'token' => $token,

@@ -13,8 +13,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
-	\spresnac\createcliuser\CreateCliUserCommand::class,
+        // class not defined
+	// \spresnac\createcliuser\CreateCliUserCommand::class,
     ];
 
     /**

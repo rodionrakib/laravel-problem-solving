@@ -39,7 +39,7 @@ Route::group(['middleware' => 'guest:api'], function() {
   Route::post('set_password', 'ProfileController@setPassword');
 
   // recipient authenticate
-  Route::post('recipienter_login', 'Recipienter\Auth\LoginController@login');
+  Route::post('recipienter_login', 'Recipienter\Auth\LoginController@attemptLogin');
   // client authenticate
   Route::post('client_login', 'Client\Auth\LoginController@login');
 });
